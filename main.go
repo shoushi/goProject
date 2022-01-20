@@ -8,7 +8,6 @@ import (
 
 func main() {
 	a := app.New()
-	myWindow := a.NewWindow("Login")
-	login.Login(myWindow)
-	myWindow.ShowAndRun()
+	login.Login(a)
+	a.Run()
 }

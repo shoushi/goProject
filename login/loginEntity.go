@@ -5,3 +5,8 @@ type LoginEntity struct {
 	Email    string
 	Password string
 }
+
+type LoginResult struct {
+	Success bool
+	Message string
+}
