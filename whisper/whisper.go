@@ -10,13 +10,15 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
+var CurrentName string
+
 func Whisper(app fyne.App) {
 	whisperWin := app.NewWindow("whisper")
 
 	// todo 后面访问server获取好友列表
 	data := []string{"shoushi", "caoyang", "little white", "ysy"}
-	datalist := binding.NewStringList()
-	userList := widget.NewListWithData(datalist, func() fyne.CanvasObject {
+	dataList := binding.NewStringList()
+	userList := widget.NewListWithData(dataList, func() fyne.CanvasObject {
 		return widget.NewLabel("")
 	}, func(di binding.DataItem, co fyne.CanvasObject) {
 		i := di.(binding.String)
@@ -26,13 +28,13 @@ func Whisper(app fyne.App) {
 	})
 	chaterWidget := container.NewGridWithRows(2, userList)
 	for _, v := range data {
-		datalist.Append(v)
+		dataList.Append(v)
 	}
 	userList.OnSelected = func(id widget.ListItemID) {
 		log.Println("和", data[id], "聊天")
 		go Chat(app, data[id])
 	}
-	whisperWin.Resize(fyne.NewSize(300, 1000))
+	whisperWin.Resize(fyne.NewSize(300, 800))
 	whisperWin.SetContent(chaterWidget)
 	whisperWin.SetIcon(theme.HomeIcon())
 	whisperWin.Show()

@@ -3,6 +3,7 @@ package login
 import (
 	"crypto/md5"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -11,6 +12,7 @@ import (
 	"strings"
 
 	"fyne.io/fyne/v2"
+	"fyne.io/fyne/v2/dialog"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 )
@@ -30,9 +32,11 @@ func Login(app fyne.App) {
 			log.Println("post 结果", res.Success)
 			if res.Success {
 				myWindow.Close()
+				whisper.CurrentName = email.Text
 				go whisper.Whisper(app)
 			} else {
-				myWindow.Close()
+				log.Println("login error")
+				dialog.NewError(errors.New("login error"), myWindow).Show()
 			}
 		}, OnCancel: func() {
 			myWindow.Close()
@@ -40,6 +44,7 @@ func Login(app fyne.App) {
 	}
 	myWindow.Resize(fyne.NewSize(400, 200))
 	myWindow.SetContent(form)
+	myWindow.CenterOnScreen()
 	myWindow.SetIcon(theme.LoginIcon())
 	myWindow.Show()
 }
@@ -63,12 +68,19 @@ func postServer(email string, password string) LoginResult {
 	resp, err := http.Post("http://localhost:8080/mock/status", "application/json", strings.NewReader(string(jsonStr)))
 	if err != nil {
 		log.Println("访问后台服务报错!")
+		resRes := LoginResult{Success: false, Message: "call server failed"}
+		return resRes
+	} else {
+		// 解析response
+		defer func() {
+			if resp != nil {
+				resp.Body.Close()
+			}
+		}()
+		body, _ := ioutil.ReadAll(resp.Body)
+		log.Println(string(body))
+		resRes := LoginResult{}
+		json.Unmarshal(body, &resRes)
+		return resRes
 	}
-	// 解析response
-	defer resp.Body.Close()
-	body, _ := ioutil.ReadAll(resp.Body)
-	log.Println(string(body))
-	resRes := LoginResult{}
-	json.Unmarshal(body, &resRes)
-	return resRes
 }
