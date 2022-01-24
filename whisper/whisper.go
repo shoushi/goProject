@@ -16,9 +16,9 @@ func Whisper(app fyne.App) {
 	whisperWin := app.NewWindow("whisper")
 
 	// todo 后面访问server获取好友列表
-	data := []string{"shoushi", "caoyang", "little white", "ysy"}
-	dataList := binding.NewStringList()
-	userList := widget.NewListWithData(dataList, func() fyne.CanvasObject {
+	friendData := []string{"shoushi", "caoyang", "little white", "ysy"}
+	friendDataList := binding.NewStringList()
+	friendList := widget.NewListWithData(friendDataList, func() fyne.CanvasObject {
 		return widget.NewLabel("")
 	}, func(di binding.DataItem, co fyne.CanvasObject) {
 		i := di.(binding.String)
@@ -26,16 +26,36 @@ func Whisper(app fyne.App) {
 		label1 := co.(*widget.Label)
 		label1.SetText(txt)
 	})
-	chaterWidget := container.NewGridWithRows(2, userList)
-	for _, v := range data {
-		dataList.Append(v)
+	for _, v := range friendData {
+		friendDataList.Append(v)
 	}
-	userList.OnSelected = func(id widget.ListItemID) {
-		log.Println("和", data[id], "聊天")
-		go Chat(app, data[id])
+
+	groupData := []string{"Just do it", "xxx", "xxx", "xxx"}
+	groupDataList := binding.NewStringList()
+	groupList := widget.NewListWithData(groupDataList, func() fyne.CanvasObject {
+		return widget.NewLabel("")
+	}, func(di binding.DataItem, co fyne.CanvasObject) {
+		i := di.(binding.String)
+		txt, _ := i.Get()
+		label1 := co.(*widget.Label)
+		label1.SetText(txt)
+	})
+	for _, v := range groupData {
+		groupDataList.Append(v)
 	}
+	friendList.OnSelected = func(id widget.ListItemID) {
+		log.Println("和", friendData[id], "聊天")
+		go Chat(app, friendData[id])
+	}
+	friendTab := container.NewGridWithRows(2, friendList)
+	groupTab := container.NewGridWithRows(2, groupList)
+	tabs := container.NewAppTabs(
+		container.NewTabItem("friends", friendTab),
+		container.NewTabItem("group", groupTab),
+	)
+
 	whisperWin.Resize(fyne.NewSize(300, 800))
-	whisperWin.SetContent(chaterWidget)
+	whisperWin.SetContent(tabs)
 	whisperWin.SetIcon(theme.HomeIcon())
 	whisperWin.Show()
 }
