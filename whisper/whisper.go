@@ -50,8 +50,8 @@ func Whisper(app fyne.App) {
 	friendTab := container.NewGridWithRows(2, friendList)
 	groupTab := container.NewGridWithRows(2, groupList)
 	tabs := container.NewAppTabs(
-		container.NewTabItem("friends", friendTab),
-		container.NewTabItem("group", groupTab),
+		container.NewTabItem("好友", friendTab),
+		container.NewTabItem("群组", groupTab),
 	)
 
 	whisperWin.Resize(fyne.NewSize(300, 800))

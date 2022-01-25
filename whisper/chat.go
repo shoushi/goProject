@@ -22,7 +22,7 @@ func Chat(app fyne.App, name string) {
 
 	inputArea := widget.NewMultiLineEntry()
 	// 输入框提交
-	submitBut := widget.NewButton("submit", func() {
+	submitBut := widget.NewButton("发送", func() {
 		sentence := inputArea.Text
 		if sentence == "" {
 			return
@@ -37,7 +37,7 @@ func Chat(app fyne.App, name string) {
 	})
 	submitBut.Resize(fyne.NewSize(200, 30))
 	// 清空输入框
-	clearBut := widget.NewButton("clear", func() {
+	clearBut := widget.NewButton("清空", func() {
 		inputArea.Text = ""
 		inputArea.Refresh()
 	})

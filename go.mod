@@ -6,6 +6,7 @@ require fyne.io/fyne/v2 v2.1.2
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/flopp/go-findfont v0.1.0 // indirect
 	github.com/fredbi/uri v0.0.0-20181227131451-3dcfdacbaaf3 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-gl/gl v0.0.0-20210813123233-e4099ee2221f // indirect

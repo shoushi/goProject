@@ -25,7 +25,7 @@ func Login(app fyne.App) {
 
 	form := &widget.Form{
 		Items: []*widget.FormItem{
-			{Text: "email", Widget: email}, {Text: "password", Widget: password}},
+			{Text: "邮箱", Widget: email}, {Text: "密码", Widget: password}},
 		OnSubmit: func() {
 			// 登录访问后台
 			res := postServer(email.Text, password.Text)
